@@ -15,12 +15,12 @@ public class Ball : MonoBehaviour
     private float yLimit;
     AudioSource bounce;
 
-    //contador
+    // contador
     int timeToStart = 3;
     public TextMeshProUGUI countDown;
 
 
-    //powerups
+    // powerups
     public GameObject LastToColl;
     
     // Start is called before the first frame update
@@ -72,20 +72,19 @@ public class Ball : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
-        //obtener el punto de colision de la pelota y la barra
+        // obtener el punto de colision de la pelota y la barra
         float playerYColl = collision.gameObject.transform.position.y; 
         float ballYColl = gameObject.transform.position.y; ;
         float collisionPoint = ballYColl - playerYColl ;
-        //bools para determinar la direccion de rebote
+        // bools para determinar la direccion de rebote
         bool pegaArriba = collisionPoint > 0;
         bool pegaDerecha = direction.x > 0;
-        //la nueva Y sera proporcional al hecho de que si golpea arriba del todo volveria en un angulo de 45grados(la Y = X)
+        // la nueva Y sera proporcional al hecho de que si golpea arriba del todo volveria en un angulo de 45grados(la Y = X)
         float porcentage = collisionPoint/(collision.gameObject.transform.localScale.y/2);
         float newYdirection = Mathf.Abs(direction.x) * porcentage;
-        //ajusto la velocidad de salida a la de entrada, ya que al reducir la Y se reduce la velocidad si no la escalo
+        // ajusto la velocidad de salida a la de entrada, ya que al reducir la Y se reduce la velocidad si no la escalo
         float velIn = Mathf.Abs(direction.x) + Mathf.Abs(direction.y);
         float velFi = Mathf.Abs(direction.x) + Mathf.Abs(newYdirection);
         float VelDif = velIn - velFi;
@@ -93,9 +92,9 @@ public class Ball : MonoBehaviour
         float yPor = 100 - xPor;
         float xDif = (VelDif * xPor) / 100;
         float yDif = (VelDif * yPor) / 100;
-        //al vector de salida le sumo la diferencia necesaria para no reducir la velocidad
+        // al vector de salida le sumo la diferencia necesaria para no reducir la velocidad
         Vector2 collisionDirection = new Vector2(Mathf.Abs(direction.x) +xDif, Mathf.Abs(newYdirection) + yDif);
-        //ajusto la direccion con los bools
+        // ajusto la direccion con los bools
         if(!pegaArriba)
         {
             collisionDirection.y = -collisionDirection.y;
@@ -105,15 +104,14 @@ public class Ball : MonoBehaviour
             collisionDirection.x = -collisionDirection.x;
         }
         direction = collisionDirection;
-        //aumento la velocidad con cada choque
+        // aumento la velocidad con cada choque
         force += 0.1f;
         LastToColl = collision.gameObject;
         bounce.Play();
         
     }
 
-
-    //get limits
+    // get limits
     public float GetScreenHeight(Transform y)
     {
         float cameraDistance = y.position.z - Camera.main.transform.position.z;
@@ -122,6 +120,5 @@ public class Ball : MonoBehaviour
         return height;
 
     }
-
 
 }
